@@ -1,0 +1,202 @@
+#!/usr/bin/env bash
+# Inspiration http://wadmiraal.net/lore/2014/07/14/how-git-hooks-made-me-a-better-and-more-lovable-developer/
+#             http://nrocco.github.io/2012/04/19/git-pre-commit-hook-for-PHP.html
+
+EXIT_CODE=0
+readonly RED_COLOR='\033[0;31m'
+readonly ORANGE_COLOR='\033[0;33m'
+readonly GREEN_COLOR='\033[0;32m'
+readonly NO_COLOR='\033[0m'
+readonly CRMOTION_ROOT_PATH=$(git rev-parse --show-toplevel)
+readonly PHP_STAGED_FILES=$(git diff --staged --diff-filter=ACMR --name-only "*.php" ':!vendor/')
+readonly PHP_STAGED_FILES_SEPARATE_BY_SPACE=$(echo -e $PHP_STAGED_FILES | tr "\n" " ")
+
+output_error() {
+    echo -e "${RED_COLOR}$1${NO_COLOR}"
+}
+
+output_warning() {
+    echo -e "${ORANGE_COLOR}$1${NO_COLOR}"
+}
+
+output_success() {
+    echo -e "${GREEN_COLOR}$1${NO_COLOR}"
+}
+
+output_ending_line() {
+    printf '%.s=' {1..79}
+    echo ''
+}
+
+show_warning_when_php_check_syntax_error() {
+    [[ -z "${PHP_STAGED_FILES}" ]] && return 0
+    php -v > /dev/null 2>&1
+    if [[ "$?" != "0" ]]; then
+        output_warning "Skipping task: php files check syntax error because not found 'php' in system PATH"
+        return 0
+    fi
+
+    output_warning "Running task: php files check syntax error by 'php -l file_path.php'..."
+    for php_file in $PHP_STAGED_FILES; do
+        [[ ! -f "$CRMOTION_ROOT_PATH/$php_file" ]] && continue
+        php -l "$CRMOTION_ROOT_PATH/$php_file" | (! grep -v "No syntax errors detected" )
+        [[ $? -ne 0 ]] && EXIT_CODE=1
+    done
+    output_ending_line
+}
+
+show_warning_when_missing_remove_php_code_debug() {
+    local readonly warning_vardump_die=$(git diff -U0 --staged --diff-filter=ACM --name-only -G "(var_dump|dump|print|die|dd\().*\\(.*\\)|die;|@TEMP\W|TODO\W|<<<<<<<<\W|>>>>>>>>\W" "*.phtml" ':!vendor/')
+    if [[ ! -z "$warning_vardump_die" ]]; then
+        EXIT_CODE=1
+        output_warning "Running task: *.phtml file check missing remove debug code!"
+        output_error "debug statement: var_dump|dump|print|die|dd|wTEMP|<<<<<|>>>>>"
+        echo -e "$(git diff -U0 --staged --color-words --diff-filter=ACM -G "(var_dump|dump|print|die|dd\().*\\(.*\\)|die;|@TEMP\W|TODO\W|<<<<<<<<\W|>>>>>>>>\W" "*.phtml")"
+        output_ending_line
+    fi
+
+}
+
+out_message_when_missing_japanese_column_comment() {
+    local readonly sql_statement_diff=$1
+    local readonly line_missing_comment=$(echo -e "$sql_statement_diff" | perl -lane 'while(/(ADD|MODIFY) COLUMN ((?!COMMENT).)*[,;\r\n\s]$/gim) { print $&;}')
+    local readonly warning_need_japanese_comment=$(
+        echo -e "$sql_statement_diff" | perl -lane '
+        use open ":std", ":encoding(UTF-8)";
+        while (/(ADD|MODIFY) COLUMN.*COMMENT ((["'\''])(.*)(["'\''])).*[,;\r\n\s]$/gim) {
+            $commentMessage=$4;
+            $sqlStatement=$&;
+            if ($commentMessage !~ /[\x{3000}-\x{303f}\x{3040}-\x{309f}\x{30a0}-\x{30ff}\x{ff00}-\x{ff9f}\x{4e00}-\x{9faf}\x{3400}-\x{4dbf}]/) {
+                # print "\n- On mysql table column definition, you are missing comment defintion:\n$sqlStatement";
+                print $sqlStatement;
+            }
+        }'
+    )
+    local readonly colunn_definition_missing_comment=$(echo -e "$sql_statement_diff" | perl -lane 'while(/^.*[0-9,a-z,A-Z$_]{1,64}\s*(CHAR|VARCHAR|BINARY|VARBINARY|TINYBLOB|TINYTEXT|TEXT|BLOB|MEDIUMTEXT|MEDIUMBLOB|LONGTEXT|LONGBLOB|ENUM|BIT|TINYINT|BOOL|BOOLEAN|SMALLINT|MEDIUMINT|INT|INTEGER|BIGINT|FLOAT|FLOAT|DOUBLE|DOUBLE PRECISION|DECIMAL|DEC|DATETIME|TIMESTAMP|DATE|TIME|YEAR)(\s+|\s*\(.*\))((?!COMMENT).)*,/gim) { print $&;}')
+    local readonly column_definition_warning_need_japanese_comment=$(
+        echo -e "$sql_statement_diff" | perl -lane '
+        use open ":std", ":encoding(UTF-8)";
+        while (/^.*`[0-9,a-z,A-Z$_]{1,64}`\s*(CHAR|VARCHAR|BINARY|VARBINARY|TINYBLOB|TINYTEXT|TEXT|BLOB|MEDIUMTEXT|MEDIUMBLOB|LONGTEXT|LONGBLOB|ENUM|SET|BIT|TINYINT|BOOL|BOOLEAN|SMALLINT|MEDIUMINT|INT|INTEGER|BIGINT|FLOAT|FLOAT|DOUBLE|DOUBLE PRECISION|DECIMAL|DEC|DATETIME|TIMESTAMP|DATE|TIME|YEAR).*COMMENT\s*((["'\''])(.*)(["'\''])).*,/gim) {
+            $commentMessage=$4;
+            $sqlStatement=$&;
+            if ($commentMessage !~ /[\x{3000}-\x{303f}\x{3040}-\x{309f}\x{30a0}-\x{30ff}\x{ff00}-\x{ff9f}\x{4e00}-\x{9faf}\x{3400}-\x{4dbf}]/) {
+                # print "\n- On mysql table column definition, please add comments in japanese at this line:\n$sqlStatement";
+                print $sqlStatement;
+            }
+        }'
+    )
+    [[ ! -z "$line_missing_comment" ]] && output_error "- The lines lack the comment definition for the database column (ALTER TABLE):" && echo -e "${line_missing_comment}"
+    [[ ! -z "$warning_need_japanese_comment" ]] && output_error "- The lines bellow has comment but not in japanese:" && echo -e "$warning_need_japanese_comment"
+    [[ ! -z "$colunn_definition_missing_comment" ]] && output_error "- The lines lack the comment definition for the database column (CREATE NEWS):" && echo -e "${colunn_definition_missing_comment}"
+    [[ ! -z "$column_definition_warning_need_japanese_comment" ]] && output_error "- The Lines that lack comment are written in Japanese:" && echo -e "$column_definition_warning_need_japanese_comment"
+}
+
+show_warning_when_missing_mysql_japanese_comment() {
+    local readonly sql_files_staged=$(git diff --staged --name-only --diff-filter=ACMR '*.sql')
+    local message_missing_japan_comment=''
+    local sql_diff_statement_content=''
+    local sql_file_path=''
+
+    [[ -z "$sql_files_staged" ]] && return
+    output_warning "Running task: *.sql files check issue missing japanese comment on column definition..."
+
+    for sql_file_path in $sql_files_staged; do
+        sql_diff_statement_content=$(git diff --staged -U0 --no-color -- "$sql_file_path" | sed '/^[-|@@|diff]/ d')
+        message_missing_japan_comment=$(out_message_when_missing_japanese_column_comment "$sql_diff_statement_content")
+        if [[ ! -z "$message_missing_japan_comment" ]]; then
+            EXIT_CODE=1
+            output_error "'$CRMOTION_ROOT_PATH/$sql_file_path'"
+            echo -e "$message_missing_japan_comment"
+        fi
+    done
+    output_ending_line
+}
+
+show_warning_when_sql_file_modified() {
+    local readonly sql_files_modified=$(git diff --staged --diff-filter='M' --name-only -- '*.sql')
+
+    [[ -z "${sql_files_modified}" ]] && return 0
+    output_warning "Running task: *.sql file check rule don't allow modify content..."
+    if [[ ! -z "$sql_files_modified" ]]; then
+        EXIT_CODE=1
+        output_error "Please don't try modify sql file bellow, write new migration sql file is better."
+        for sql_file_path in $sql_files_modified; do
+            echo "- $CRMOTION_ROOT_PATH/$sql_file_path"
+        done
+    fi
+    output_ending_line
+}
+
+auto_code_format_staged_php_files() {
+    [[ -z "${PHP_STAGED_FILES}" ]] && return 0
+
+    local readonly PHPCBF="php ${CRMOTION_ROOT_PATH}/tools/phpcbf.phar"
+    ${PHPCBF} --version > /dev/null 2>&1
+    if [[ "$?" != "0" ]]; then
+        output_warning "Skipping task: phpcbf auto format php files code because nonexistent ${CRMOTION_ROOT_PATH}/tools/phpcbf.phar"
+        return 0
+    fi
+    output_warning "Running task: phpcbf auto format php files code after that add these files to git staging area..."
+    cd ${CRMOTION_ROOT_PATH}
+    ${PHPCBF} ${PHP_STAGED_FILES_SEPARATE_BY_SPACE}
+    git add ${PHP_STAGED_FILES_SEPARATE_BY_SPACE}
+    output_ending_line
+}
+
+show_warning_when_js_check_syntax_error() {
+    local readonly js_files_modified=$(git diff --staged --diff-filter='M' --name-only -- '*.vue' --name-only -- '*.js')
+
+    make -v > /dev/null 2>&1
+    if [[ "$?" != "0" ]]; then
+        output_warning "Skipping task: eslint auto check js files code because none install npm or make"
+        return 0
+    fi
+    output_warning "Running task: eslint auto check js files code ..."
+    local readonly ESLINT="make check-eslint"
+    cd ${CRMOTION_ROOT_PATH}
+    ${ESLINT} ${PHP_STAGED_FILES_SEPARATE_BY_SPACE}
+    [[ "$?" != "0" ]] && EXIT_CODE=1
+    output_ending_line
+}
+
+show_warning_when_php_file_not_match_coding_standard() {
+    [[ -z "${PHP_STAGED_FILES}" ]] && return 0
+
+    local readonly PHPCS="php ${CRMOTION_ROOT_PATH}/tools/phpcs.phar"
+    ${PHPCS} --version > /dev/null 2>&1
+    if [[ "$?" != "0" ]]; then
+        output_warning "Skipping task: phpcs check coding standard of php files because nonexistent ${CRMOTION_ROOT_PATH}/tools/phpcs.phar"
+        return 0
+    fi
+    output_warning "Running task: phpcs check coding standard of php files..."
+    cd ${CRMOTION_ROOT_PATH}
+    ${PHPCS} --report=emacs ${PHP_STAGED_FILES_SEPARATE_BY_SPACE}
+    [[ "$?" != "0" ]] && EXIT_CODE=1
+    output_ending_line
+}
+
+show_warning_when_php_file_code_is_not_match_psalm() {
+    [[ -z "${PHP_STAGED_FILES}" ]] && return 0
+    php -v > /dev/null 2>&1
+    if [[ "$?" != "0" ]]; then
+        output_warning "Skipping task: php files check syntax error because not found 'php' in system PATH"
+        return 0
+    fi
+    output_warning "Running task: psalm php static analyzing .."
+    local readonly PSALM="${CRMOTION_ROOT_PATH}/vendor/bin/psalm --show-info=false "
+    ${PSALM} $PHP_STAGED_FILES
+    [[ $? -ne 0 ]] && EXIT_CODE=1
+    output_ending_line
+}
+
+main() {
+    output_warning "***************** RUNNING COMMIT CHECK .git/hooks/pre-commit ******************"
+    show_warning_when_js_check_syntax_error
+    show_warning_when_php_check_syntax_error
+    show_warning_when_missing_remove_php_code_debug
+    show_warning_when_php_file_not_match_coding_standard
+    [[ $EXIT_CODE -gt 0 ]] && output_error "\nPLEASE FIX ERRORS ABOVE AND TRY COMMITING AGAIN!" || output_success "COMMIT RULES CHECK PASS ALL"
+    return $EXIT_CODE
+}
+
+main

@@ -1,0 +1,45 @@
+# Please maintain this file carefully
+#
+# Inspired from:
+# - https://youknowfordevs.com/2018/12/07/getting-control-of-your-dockerignore-files.html#only-include-those-files-referenced-in-dockerfile
+# - https://codefresh.io/docker-tutorial/not-ignore-dockerignore-2/
+#
+# References :
+# - https://docs.docker.com/engine/reference/builder/#dockerignore-file
+
+
+# Exclude Everything (prevent copy anything into build context)
+*
+
+# These folders or files will copy into build context (whitelist)
+!.docker
+!app
+!tools
+!bootstrap
+!config
+!database
+!lang
+!public
+!vendor
+!storage
+!resources
+!routes
+!README.md
+!*.sh
+!*.php
+!composer.lock
+!composer.json
+!artisan
+!modules_statuses.json
+# In (whitelist) above, prevent copy these folders or files into build context
+app/configs/*
+app/Modules/*/resources/storage/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/framework/cache/*
+storage/framework/logs/*
+storage/app/public/*
+storage/logs/*
+bootstrap/cache/*
+**/.DS_Store
+**/.git

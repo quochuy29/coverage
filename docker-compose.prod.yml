@@ -1,0 +1,25 @@
+## Run in production env: (use image: *:latest version only)
+## Please read use guide in ./docs/dev-on-docker-env-note.pdf
+## please manual create docker-compose.prod.yml on production server to override: ports, volume, image:tag
+#     docker-compose -f docker-compose.yml -f docker-compose.prod.yml up
+## To see config after merge please run command:
+#     docker-compose -f docker-compose.yml -f docker-compose.prod.yml config
+version: "3.7"
+services:
+  coverage_app:
+    environment:
+      APP_NAME: Coverage
+      APP_ENV: local
+      APP_KEY: base64:AvyDUb5L/iIqViAzw6+/6gdfoNqWfaYvEFxHotgZh2s=
+      APP_DEBUG: 1
+      APP_URL: http://localhost:8080
+      LOG_CHANNEL: stderr
+      LOG_DEPRECATIONS_CHANNEL: null
+      LOG_LEVEL: debug
+      DB_CONNECTION: mysql
+      DB_HOST: coverage_db
+      DB_PORT: 3306
+      DB_DATABASE: coverage
+      DB_USERNAME: root
+      DB_PASSWORD: huypq29102001
+      APPLICATION_ENV: production

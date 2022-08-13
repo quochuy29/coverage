@@ -1,0 +1,53 @@
+## Base service of bizcrm application:
+## Please read use guide in ./docs/dev-on-docker-env-note.pdf
+## This app will deploy on ECS so we can't use custom network need use deprecated docker 'link' feature
+## 1. Combined this file with docker-composer.prod.yml to build and run production image
+## 2. Combined this file with docker-composer.overrides.yml to build and run dev image
+version: "3.7"
+services:
+  coverage_app:
+    image: coverage-app:${TAG:-latest}
+    container_name: coverage_app
+    init: true
+    environment:
+      APPLICATION_ENV: production
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+      target: coverage-app
+      args:
+        GIT_COMMIT_HASH: N/A
+        GIT_BRANCH_NAME: N/A
+    tty: true
+    restart: always
+  coverage_public:
+    image: coverage-public:${TAG:-latest}
+    container_name: coverage_public
+    init: true
+    build:
+      context: .
+      dockerfile: .docker/Dockerfile
+      target: coverage-public
+      args:
+        GIT_COMMIT_HASH: N/A
+        GIT_BRANCH_NAME: N/A
+    ports:
+      - 8080:80
+    restart: always
+    depends_on:
+      - coverage_app
+    environment:
+        - APP_CONTAINER_LINK=coverage_app:9000
+  blackfire:
+    image: blackfire/blackfire:2
+    ports: ["8307"]
+    container_name: coverage_blackfire
+    restart: always
+    init: true
+    environment:
+      BLACKFIRE_SERVER_ID: 884d6027-bb47-471d-b835-1f3e65eacb6c
+      BLACKFIRE_SERVER_TOKEN: 8a8fe543fd6fd11d029278dc2641ede35c9924a8c949e890f9bcbf2b45182713
+
+networks:
+  default:
+    name: coverage
