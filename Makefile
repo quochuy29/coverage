@@ -31,11 +31,11 @@ on-app: sync-pre-commit ## On app without elastic search
 	echo "$$branch_or_tag - $$sha_id" > VERSION
 
 on-app-prod: ## On app in production mode
-	@echo "List converage TAG image exits on your computer:"
-	@docker images --format "- {{.Tag}}" converage-app
-	@read -p "Run converage app with docker image TAG [latest]: " TAG; \
+	@echo "List coverage TAG image exits on your computer:"
+	@docker images --format "- {{.Tag}}" coverage-app
+	@read -p "Run coverage app with docker image TAG [latest]: " TAG; \
 	set -eux; \
-	docker-compose up -d converage_db; \
+	docker-compose up -d coverage_db; \
 	TAG=$${TAG:=latest} docker-compose \
 		-f docker-compose.yml \
 		-f docker-compose.prod.yml \
@@ -47,12 +47,12 @@ off-app: ## Off app without elastic search
 	-f docker-compose.override.yml \
 	down
 
-build-prod: ## Docker build converage production image
+build-prod: ## Docker build coverage production image
 	@printf "To run in non-interactive mode please run command bellow:\n\t";\
-	printf "${TITLE_COLOR}TAG=converage_tag AWS_ACCOUNT_ID=your_aws_account make build-prod-fargate${NO_COLOR}\n";\
+	printf "${TITLE_COLOR}TAG=coverage_tag AWS_ACCOUNT_ID=your_aws_account make build-prod-fargate${NO_COLOR}\n";\
 	\
 	if [ -z "$$TAG" ]; then\
-		read -p "converage docker image TAG [`date +'%Y.%m.%d'`] TAG=" TAG;\
+		read -p "coverage docker image TAG [`date +'%Y.%m.%d'`] TAG=" TAG;\
 	fi;\
 	\
 	if [ -z "$$AWS_ACCOUNT_ID" ]; then\
@@ -61,14 +61,14 @@ build-prod: ## Docker build converage production image
 	\
 	AWS_ACCOUNT_ID=$${AWS_ACCOUNT_ID:=526165498944};\
 	TAG=$${TAG:=`date +'%Y.%m.%d'`};\
-	printf "${TITLE_COLOR}Building converage with TAG='$$TAG' and push to aws account AWS_ACCOUNT_ID='$$AWS_ACCOUNT_ID'${NO_COLOR} ...\n";\
+	printf "${TITLE_COLOR}Building coverage with TAG='$$TAG' and push to aws account AWS_ACCOUNT_ID='$$AWS_ACCOUNT_ID'${NO_COLOR} ...\n";\
 	\
 	TAG=$${TAG} docker-compose -f docker-compose.yml build\
 		--build-arg GIT_BRANCH_NAME=`git symbolic-ref -q --short HEAD || git describe --tags --exact-match`\
 		--build-arg GIT_COMMIT_HASH=`git rev-parse --short HEAD`;\
 	\
-	docker tag converage-public:$${TAG} $${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/converage-public:$${TAG};\
-	docker tag converage-app:$${TAG} $${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/converage-app:$${TAG};\
+	docker tag coverage-public:$${TAG} $${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/coverage-public:$${TAG};\
+	docker tag coverage-app:$${TAG} $${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/coverage-app:$${TAG};\
 
 docker-login: ## Docker login with aws credential (use to push docker image)
 	@if [ -z "$$AWS_ACCOUNT_ID" -o -z "$$AWS_ACCESS_KEY_ID" -o -z "$$AWS_SECRET_ACCESS_KEY" ]; then\
@@ -80,11 +80,11 @@ docker-login: ## Docker login with aws credential (use to push docker image)
 
 docker-push: ## Docker push faragte image. Make sure you run docker-login first
 	@if [ -z "$$AWS_ACCOUNT_ID" -o -z "$$TAG" ]; then\
-		printf "To push converage fargate image please run:\n";\
+		printf "To push coverage fargate image please run:\n";\
 		printf "${TITLE_COLOR}AWS_ACCOUNT_ID=x TAG=y make docker-push${NO_COLOR}\n";\
 	else\
-		docker push $${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/converage-public:$${TAG};\
-		docker push $${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/converage-app:$${TAG};\
+		docker push $${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/coverage-public:$${TAG};\
+		docker push $${AWS_ACCOUNT_ID}.dkr.ecr.ap-northeast-1.amazonaws.com/coverage-app:$${TAG};\
 	fi
 
 destroy-app: clean ## Cleanup tenant dir, run this on your personal computer only
@@ -97,49 +97,49 @@ composer-install-test-libraries: ## Composer install on tests directory
 	cd tests && composer install
 
 test: on-app## Run phpunit test app integration with database
-	docker exec -t converage_app tests/phpunit --no-coverage --testdox -c tests/phpunit.xml
+	docker exec -t coverage_app tests/phpunit --no-coverage --testdox -c tests/phpunit.xml
 
 test-library: on-app ## Run phpunit test library only - testdox
-	docker exec -t converage_app tests/phpunit --no-coverage --testdox -c tests/phpunit.lib.xml
+	docker exec -t coverage_app tests/phpunit --no-coverage --testdox -c tests/phpunit.lib.xml
 
 test-coverage: on-app ## Measure test coverage
-	docker exec -t -e XDEBUG_MODE=coverage converage_app tests/phpunit -d memory_limit=-1 -c tests/phpunit.xml
+	docker exec -t -e XDEBUG_MODE=coverage coverage_app tests/phpunit -d memory_limit=-1 -c tests/phpunit.xml
 
 clean-test-coverage: ## Clean test coverage results
 	rm -rf tests/coverage
 
-ssh-app: ## SSH into converage app container
-	docker exec -it converage_app sh
+ssh-app: ## SSH into coverage app container
+	docker exec -it coverage_app sh
 
-ssh-app-as-root: ## SSH into converage app container as root user
-	docker exec -it --user 0 converage_app sh
+ssh-app-as-root: ## SSH into coverage app container as root user
+	docker exec -it --user 0 coverage_app sh
 
-show-log-app: ## Show log converage app container
-	docker logs -f converage_app
+show-log-app: ## Show log coverage app container
+	docker logs -f coverage_app
 
-show-log-app-nginx: ## Show log converage nginx container
-	docker logs -f converage_public
+show-log-app-nginx: ## Show log coverage nginx container
+	docker logs -f coverage_public
 
 show-log-db: ## Show log mysql server container
-	docker logs -f converage_db
+	docker logs -f coverage_db
 
 # show-log-saml: ## Show log saml server - keycloak container
 # 	docker logs -f keycloak
 npm-run: ## Run NPM run in APP container
-	docker exec -t --user 0 converage_app npm run dev
+	docker exec -t --user 0 coverage_app npm run dev
 
 check-eslint: ## Run check eslint in source
-	docker exec -t --user 0 converage_app npm run eslint
+	docker exec -t --user 0 coverage_app npm run eslint
 
 
 composer-install: ## Run Composer install in APP container
-	docker exec -t converage_app composer install
+	docker exec -t coverage_app composer install
 
 npm-install: ## Run NPM install in APP container
-	rm -rf node_modules && docker exec -t --user 0 converage_app npm install
+	rm -rf node_modules && docker exec -t --user 0 coverage_app npm install
 
 up-db: ## Migrate database for all tenant
-	docker exec -t converage_app sh ./phinxMigrateForAllCustomer.sh
+	docker exec -t coverage_app sh ./phinxMigrateForAllCustomer.sh
 
 # clean: ## Remove all tenant dir, run this on your personal computer only
 # 	rm -rfv application/configs/*.application.ini;\
@@ -149,7 +149,7 @@ up-db: ## Migrate database for all tenant
 # 	rm -rfv ^application/modules/issue/views/scripts/searchbasic/multitenancy/.gitignore application/modules/issue/views/scripts/searchbasic/multitenancy/*
 
 # list-tenant: ## List all tenant name
-# 	@cd data/multitenancy && ls -1d * 2>/dev/null || printf '${TITLE_COLOR}Not found any tenant.\nPlease install converage app first.${NO_COLOR}\n'
+# 	@cd data/multitenancy && ls -1d * 2>/dev/null || printf '${TITLE_COLOR}Not found any tenant.\nPlease install coverage app first.${NO_COLOR}\n'
 
 sync-pre-commit:
 	cp tools/pre-commit .git/hooks/pre-commit
@@ -159,7 +159,7 @@ sync-pre-commit:
 # 		[ ! -e $$application_ini ] && printf "${TITLE_COLOR}Firstly please install app /install.php after that run this task again.${NO_COLOR}\n" && continue ;\
 # 		dbname=$$(awk -F "=" "/resources.db.params.dbname/ {print \$$2}" $$application_ini  | tr -d " \"");\
 # 		printf "Turn off 2step login for db ${COMMAND_COLOR}$$dbname${NO_COLOR} founded in ${COMMAND_COLOR}$$application_ini${NO_COLOR}\n";\
-# 		docker-compose exec converage_db mysql -pcdmllove $$dbname -e "update crm_member set member_used_2auth=0 where member_id=1;";\
+# 		docker-compose exec coverage_db mysql -pcdmllove $$dbname -e "update crm_member set member_used_2auth=0 where member_id=1;";\
 # 	done
 #
 # vagrant-off-2step-login: ## Turn off 2 step login for vagrant develop env

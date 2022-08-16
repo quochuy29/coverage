@@ -38,15 +38,6 @@ services:
       - coverage_app
     environment:
         - APP_CONTAINER_LINK=coverage_app:9000
-  blackfire:
-    image: blackfire/blackfire:2
-    ports: ["8307"]
-    container_name: coverage_blackfire
-    restart: always
-    init: true
-    environment:
-      BLACKFIRE_SERVER_ID: 884d6027-bb47-471d-b835-1f3e65eacb6c
-      BLACKFIRE_SERVER_TOKEN: 8a8fe543fd6fd11d029278dc2641ede35c9924a8c949e890f9bcbf2b45182713
 
 networks:
   default:
