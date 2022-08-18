@@ -9,6 +9,7 @@
         <script>
         window.App = {!! json_encode([
             'csrfToken' => csrf_token(),
+            'routes' => $routes,
         ]) !!};
         window.App.baseUrl = window.location.origin;
         </script>
@@ -18,6 +19,8 @@
         <link href="{{ mix('css/app.css') }}" rel="stylesheet">
     </head>
     <body class="antialiased">
-        
+        <div id="app">
+            <app></app>
+        </div>
     </body>
 </html>
