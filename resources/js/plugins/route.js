@@ -1,7 +1,7 @@
-import Vue from 'vue';
+window.Vue = require('vue').default;
 
 const routes = window.App.routes;
-Vue.prototype.$routea = function(...args) {
+Vue.prototype.$routes = function(...args) {
   const name = args.shift();
   if (routes[name] === undefined) {
     console.error('Route not found ', name);

@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/app', function () {
+Route::get('{any}', function () {
     return view('welcome');
-})->name('start');
+})->where('any','.*')->name('start');
