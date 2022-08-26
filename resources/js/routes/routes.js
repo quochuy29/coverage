@@ -1,4 +1,4 @@
-import AppIndex from '../modules/product/pages/index.vue';
+import Main from '../modules/Layouts/Main.vue';
 import Login from '../modules/Auth/pages/Login.vue';
 export default {
   mode: 'history',
@@ -7,15 +7,15 @@ export default {
   routes: [
     {
       path: '/app',
-      component: AppIndex,
+      component: Main,
       name: 'homepage',
-      meta: { requiresAuth: false }
+      meta: { requiresAuth: true }
     },
     {
       path: '/login',
       component: Login,
       name: 'login',
       meta: { requiresAuth: false }
-    }
+    },
   ]
 }

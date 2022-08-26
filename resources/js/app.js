@@ -48,6 +48,8 @@ router.beforeEach((to, from, next) => {
   } else if (to.matched.some(record => record.meta.guest)) {
       if (loggedIn()) {
           next({
+            path: '/login',
+              query: { redirect: to.fullPath }
           })
       } else {
           next()

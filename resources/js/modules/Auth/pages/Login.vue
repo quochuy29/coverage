@@ -60,3 +60,12 @@
         }
     }
 </script>
+
+<style lang="less" scoped>
+  @media only screen and (max-width: 768px) {
+    .coverage {
+      width: 100%;
+      padding: 40px 35px;
+    }
+  }
+</style>

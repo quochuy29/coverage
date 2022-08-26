@@ -1,7 +1,5 @@
 <template>
-  <div class="whole">
-    <router-view></router-view>
-  </div>
+  <router-view></router-view>
 </template>
 
 <script>
