@@ -1,6 +1,16 @@
 <template>
   <div class="sidenav-container" id="side-nav">
     <nav class="nav">
+      <div class="nav__user">
+            <div class="nav__user-image">
+            <img :src="`${user.member_avatar}`" loading="lazy" alt="profile">
+            </div>
+
+            <div class="nav__user-info">
+            <div class="nav__user-info-name">{{ user.member_login_name }}</div>
+            <div class="nav__user-info-email">{{ user.member_email }}</div>
+            </div>
+      </div>
       <hr>
 
       <ul class="nav__list">
@@ -88,6 +98,13 @@
 
 <script>
 export default {
+   props: {
+    user: {
+        type: Object,
+        require: true,
+        default: {}
+    }
+  },
   mounted() {
   },
   methods: {

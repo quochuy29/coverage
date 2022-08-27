@@ -1,5 +1,5 @@
 <template>
-  <main class="main">
+  <main class="login">
     <div class="container">
       <div class="login__screen">
         <div class="login__logo">

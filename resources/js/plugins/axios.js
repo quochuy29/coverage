@@ -10,6 +10,8 @@ axios.interceptors.request.use((request) => {
 
     return request;
 })
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.withCredentials = true;
 
 Vue.prototype.$axios = axios;
 

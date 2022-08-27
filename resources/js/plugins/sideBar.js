@@ -13,12 +13,14 @@
    * @param {Object} sideNav side nav
    * @param {Object} ola main
    * @param {Object} menuBtn menu btn
+   * @param {Boolean} response menubtn
    */
-    constructor(navLinks, sideNav, ola, menuBtn) {
+    constructor(navLinks, sideNav, ola, menuBtn, response) {
         this.navLinks = navLinks;
         this.sideNav = sideNav;
         this.ola = ola;
         this.menuBtn = menuBtn;
+        this.response = response;
     }
 
     /**
@@ -34,21 +36,28 @@
      * SideBar toggle
      */
     toggleSideNav() {
-      console.log(1);
-        const {sideNav, ola} = this;
+        const {sideNav, ola, response} = this;
         if (sideNav.style.width == "2.8rem" || sideNav.style.width == "") {
             sideNav.style.width = "12rem";
-            ola.style.width = "75%"
+            if(response){
+              ola.style.width = "calc(100% - 12rem)";
+            }
         } else {
             // close side nav
             sideNav.style.width = "2.8rem";
-            ola.style.width = "95%"
+            if(response){
+              ola.style.width = "calc(100% - 2.8rem)";
+            }
             // close all opened sub menus
             document.querySelectorAll('.nav__drop').forEach(drop => drop.style.height = '0px');
-
         }
     }
+
+    /**
+     * drop sidebar
+     */
     drop() {
+        const response = window.matchMedia("(max-width: 769px)").matches;
         const sideNav = document.querySelector("#side-nav");
         const ola = document.querySelector(".ola");
         const subMenu = this.nextElementSibling;
@@ -57,12 +66,18 @@
           if (subMenu.style.height == "0px" || subMenu.style.height == "") {
             subMenu.style.height = subMenu.scrollHeight + "px";
             // open side nav
-            sideNav.style.width = "10rem";
-            ola.style.width = "75%"
+            sideNav.style.width = "12rem";
+            if(response){
+              ola.style.width = "calc(100% - 12rem)";
+            }
           } else {
             subMenu.style.height = "0px";
-            sideNav.style.width = "2.8rem";
-            ola.style.width = "94%"
+            if (response) {
+              sideNav.style.width = "2.8rem";
+              if(response){
+                ola.style.width = "calc(100% - 2.8rem)";
+              }
+            }
           }
         }
     }
@@ -89,8 +104,10 @@
     if (!ola) {
         return;
     }
+
+    const response = window.matchMedia("(max-width: 769px)").matches;
   
-    const sideBar = new SideBar(navLinks, sideNav, ola, menuBtn);
+    const sideBar = new SideBar(navLinks, sideNav, ola, menuBtn, response);
     sideBar.start();
   };
   

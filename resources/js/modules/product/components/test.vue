@@ -1,8 +1,5 @@
 <template>
-    <div class="ola">
-        olaa
-        <router-link :to="{ name: 'login'}">alo</router-link>
-    </div>
+
 </template>
 
 <script>

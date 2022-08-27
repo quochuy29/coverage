@@ -11,12 +11,12 @@
 
         <div class="nav__user">
             <div class="nav__user-image">
-            <img src="assets/images/271_fb902c8.jpg" alt="profile">
+            <img :src="`${user.member_avatar}`" loading="lazy" alt="profile">
             </div>
 
             <div class="nav__user-info">
-            <div class="nav__user-info-name">Jane Doe</div>
-            <div class="nav__user-info-email">janedoe@gmail.com</div>
+            <div class="nav__user-info-name">{{ user.member_login_name }}</div>
+            <div class="nav__user-info-email">{{ user.member_email }}</div>
             </div>
         </div>
     </header>
@@ -24,7 +24,19 @@
 
 <script>
 export default {
-    mounted() {
+    props: {
+        user: {
+            type: Object,
+            require: true,
+            default: {}
+        }
+    },
+    data() {
+        return {
+            
+        }
+    },
+    methods: {
     },
 }
 </script>

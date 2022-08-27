@@ -1,5 +1,4 @@
 .sidenav-container {
-  height: 100vh;
   width: 12rem;
   background-color: #fff;
   transition: width 0.2s ease;
@@ -17,6 +16,9 @@
 
   .nav__icon--menu {
     display: none;
+    &:hover {
+      color: var(--color-primary);
+    }
   }
 
   &-logo {
@@ -26,6 +28,48 @@
 .nav {
   overflow: hidden;
 
+  
+  .nav__user {
+    display: none;
+    grid-template-columns: max-content 1fr;
+    column-gap: 5px;
+    padding: 0.75rem 0;
+    border-radius: 2rem;
+    cursor: pointer;
+    
+    &-image {
+        position: relative;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 100%;
+        overflow: hidden;
+    
+        img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+    }
+    
+    &-info {
+      line-height: 1.2rem;
+
+      &-name {
+        font-size: 2rem;
+        &:hover {
+          color: var(--color-primary);
+        }
+      }
+
+      &-email {
+        font-size: 2rem;
+        font-weight: 300;
+        &:hover {
+          color: var(--color-primary);
+        }
+      }
+    }
+  }
 
   &__item {
     border-radius: 0.5rem;
@@ -94,6 +138,12 @@
     width: calc(100% - 2.8rem);
   }
 
+  .nav {
+    .nav__user {
+      display: grid;
+    }
+  }
+
   .nav__brand {
     .nav__icon--menu {
       width: 2.5rem;
@@ -104,13 +154,15 @@
       cursor: pointer;
       transition: 0.1s ease;
 
-      &:hover {
-        background: lighten(#12192c, 4);
-      }
-
       &:active {
-        background: lighten(#12192c, 8);
+        background: var(--color-primary);
       }
     }
+  }
+}
+
+@media only screen and (min-width: 769px) {
+  .sidenav-container {
+    width: 12rem;
   }
 }

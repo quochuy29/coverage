@@ -4,7 +4,7 @@
       padding-top: 0;
     }
   
-    .main {
+    .login {
       height: 100vh;
   
       .container {
@@ -42,8 +42,8 @@
   .login__error {
     p {
       font-weight: 700;
-      line-height: 0px;
-      color: var(--color-primary);
+      line-height: 1;
+      color: #c4262c;
     }
   }
   
@@ -119,16 +119,10 @@
   }
   
   .login__link {
-    margin-top: 20px;
     text-align: center;
     list-style-type: none;
     padding: 0;
-  
-    li {
-      &:not(:first-child) {
-        margin-top: 10px;
-      }
-    }
+    margin: 0;
   
     a {
       font-size: 2rem;
@@ -143,17 +137,30 @@
   }
 
   @media only screen and (min-width: 769px) {
-    .login__screen {
+    .coverage .login .container {
+      height: 100%;
+      .login__screen {
         width: 420px;
         padding: 50px 50px 30px;
         background: #fff;
         border-radius: 10px;
         box-shadow: 0 3px 20px rgb(42 94 164 / 10%);
+      }
     }
   }
 
-  @media only screen and (min-width: 769px) {
-    .coverage .main .container {
-      height: 100%;
+  @media only screen and (max-width: 768px){
+    .coverage .login .container {
+      width: 100%;
+      min-height: 100%;
+      .login__screen {
+        width: 100%;
+      }
+    }
+  }
+
+  @media (min-width: 576px){
+    .coverage .login .container {
+      max-width: 100%;
     }
   }
