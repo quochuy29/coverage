@@ -107,7 +107,7 @@ COPY --chown=www-data:www-data resources resources
 COPY --chown=www-data:www-data routes routes
 COPY --chown=www-data:www-data tools tools
 
-COPY --chown=www-data:www-data composer.json artisan modules_statuses.json ./
+COPY --chown=www-data:www-data composer.json artisan
 COPY --chown=www-data:www-data public/*.php public/mix-manifest.json public/
 COPY --from=composer:2.3.5 /usr/bin/composer /usr/bin/composer
 COPY --from=vendor --chown=www-data:www-data /var/www/html/coverage/vendor /var/www/html/coverage/vendor

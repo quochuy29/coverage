@@ -68,7 +68,7 @@ services:
       - 3308:3306
     environment:
       MYSQL_ROOT_PASSWORD: huypq29102001
-      MYSQL_DATABASE: coverage_unittest
+      MYSQL_DATABASE: coverage
       TZ: Asia/Tokyo
     volumes:
       - data-mysql-coverage:/var/lib/mysql:delegated

@@ -30,10 +30,7 @@
 !composer.lock
 !composer.json
 !artisan
-!modules_statuses.json
 # In (whitelist) above, prevent copy these folders or files into build context
-app/configs/*
-app/Modules/*/resources/storage/*
 storage/framework/sessions/*
 storage/framework/views/*
 storage/framework/cache/*
