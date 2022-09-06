@@ -36,6 +36,12 @@ function loggedIn() {
 }
 
 router.beforeEach((to, from, next) => {
+  if (to.path == "/") {
+    next({
+      path: '/login'
+    })
+  }
+
   if (to.matched.some(record => record.meta.requiresAuth)) {
       if (loggedIn() == null) {
           next({

@@ -72,12 +72,12 @@
             }
           } else {
             subMenu.style.height = "0px";
-            if (response) {
-              sideNav.style.width = "2.8rem";
-              if(response){
-                ola.style.width = "calc(100% - 2.8rem)";
-              }
-            }
+            // if (response) {
+            //   sideNav.style.width = "12rem";
+            //   if(response){
+            //     ola.style.width = "calc(100% - 2.8rem)";
+            //   }
+            // }
           }
         }
     }
