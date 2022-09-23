@@ -31,6 +31,22 @@ function importModuleComponents(context) {
 }
 importModuleComponents(require.context('../../resources/js/modules', true, /\.vue$/i));
 
+/**
+ * Modules component register
+ * @param {context} context
+ */
+ function importModuleCommons(context) {
+  for (const key of context.keys()) {
+    const keys = key.split('/');
+    const component = [];
+    component.push('Common');
+    component.push(capitalizeFirstLetter(keys.pop().split('.')[0]));
+    console.log(component.join('-'), context(key).default);
+    Vue.component(component.join('-'), context(key).default);
+  }
+}
+importModuleCommons(require.context('../../resources/js/components', true, /\.vue$/i));
+
 function loggedIn() {
   return sessionStorage.getItem('token')
 }

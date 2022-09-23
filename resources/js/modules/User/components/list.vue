@@ -73,16 +73,12 @@
                 {{ user.member_phone_mobile}}
             </div>
         </div>
+        <Common-Pagination v-if="members && members.length > 0" :pagination="pagination" @goto-page="gotoPage"></Common-Pagination>
     </div>
 </template>
 
 <script>
     export default {
-        data() {
-            return {
-                
-            }
-        },
         props: {
             members: {
                 type: Array,
@@ -95,16 +91,19 @@
             loading: {
                 type: Boolean,
                 default: false
+            },
+            pagination: {
+                type: Object,
+                default: {}
             }
         },
         methods: {
             sortData(sortField) {
                 this.$emit('sort-data', sortField);
+            },
+            gotoPage(page) {
+                this.$emit('goto-page', page);
             }
         },
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

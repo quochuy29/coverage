@@ -3,7 +3,9 @@
     :members="members" 
     :params="params" 
     :loading="loadingChild"
-    @sort-data="sortData">
+    :pagination="pagination"
+    @sort-data="sortData"
+    @goto-page="gotoPage">
     </User-List>
 </template>
 
@@ -18,7 +20,8 @@ export default {
                 sortType: 'asc',
                 searchField: ''
             },
-            loadingChild: false
+            loadingChild: false,
+            pagination: {}
         }
     },
     mounted() {
@@ -28,8 +31,9 @@ export default {
         async getMember() {
             try {
                 const member = await axios.get('member', {params: this.params});
+                this.pagination = member.data;
                 setTimeout(() => {
-                    this.members = member.data;
+                    this.members = member.data.data;
                     this.loadingChild = true;
                 }, 50);
             } catch (error) {
@@ -37,7 +41,6 @@ export default {
             }
         },
         sortData(sortField) {
-            console.log(1);
             if (!this.members.length) {
                 return false;
             }
@@ -48,6 +51,12 @@ export default {
             } else {
                 this.params.sortType = this.params.sortType === 'asc' ? 'desc' : 'asc';
             }
+            this.$forceUpdate();
+            this.getMember();
+        },
+        gotoPage(page) {
+            this.params.page = page;
+            this.pagination.current_page = page;
             this.$forceUpdate();
             this.getMember();
         }
