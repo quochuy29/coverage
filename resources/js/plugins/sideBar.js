@@ -72,12 +72,12 @@
             }
           } else {
             subMenu.style.height = "0px";
-            // if (response) {
-            //   sideNav.style.width = "12rem";
-            //   if(response){
-            //     ola.style.width = "calc(100% - 2.8rem)";
-            //   }
-            // }
+            if (response) {
+              sideNav.style.width = "12rem";
+              if(response){
+                ola.style.width = "calc(100% - 12rem)";
+              }
+            }
           }
         }
     }
@@ -87,22 +87,22 @@
     const navLinks = document.querySelectorAll(".nav__link");
     
     if (!navLinks) {
-        return;
+      return;
     }
     
     const menuBtn = document.querySelector("#nav-toggle");
     if (!menuBtn) {
-        return;
+      return;
     }
-
+    
     const sideNav = document.querySelector("#side-nav");
     if (!sideNav) {
-        return;
+      return;
     }
     
     const ola = document.querySelector(".ola");
     if (!ola) {
-        return;
+      return;
     }
 
     const response = window.matchMedia("(max-width: 769px)").matches;

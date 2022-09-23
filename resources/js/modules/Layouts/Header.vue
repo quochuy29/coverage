@@ -5,13 +5,13 @@
                 <a class="fa-solid fa-bars"></a>
             </div>
             <a href="#" class="nav__brand-logo">
-                <img width="90" src="assets/images/logo-name.png" alt="">
+                <img width="90" src="/assets/images/logo-name.png" alt="">
             </a>
         </div>
 
         <div class="nav__user">
             <div class="nav__user-image">
-            <img :src="`${user.member_avatar}`" loading="lazy" alt="profile">
+            <img :src="`/${user.member_avatar}`" loading="lazy" alt="profile">
             </div>
 
             <div class="nav__user-info">

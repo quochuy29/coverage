@@ -3,7 +3,9 @@
         <Layouts-Header :user="user"></Layouts-Header>
         <div class="main">
             <Layouts-Sidebar :user="user"></Layouts-Sidebar>
-            <Layouts-Content></Layouts-Content>
+            <div class="ola">
+                <router-view></router-view>
+            </div>
         </div>
     </div>
 </template>
@@ -21,11 +23,9 @@
         methods: {
             async getUser() {
                 try {
-                    const user = await axios.get('/user');
+                    const user = await axios.get('user');
                     this.user = user.data
-                    console.log(this.user);
                 } catch(error) {
-                    console.log(error);
                     if (error.response.status !== 200) {
                         this.$router.push('login')
                     }

@@ -126,7 +126,7 @@ show-log-db: ## Show log mysql server container
 # show-log-saml: ## Show log saml server - keycloak container
 # 	docker logs -f keycloak
 npm-run: ## Run NPM run in APP container
-	docker exec -t --user 0 coverage_app npm run dev
+	docker exec -t --user 0 coverage_app npm run watch
 
 check-eslint: ## Run check eslint in source
 	docker exec -t --user 0 coverage_app npm run eslint

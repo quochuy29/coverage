@@ -1,9 +1,9 @@
 window.Vue = require('vue').default;
 import axios from 'axios';
 
-axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = '/api';
 axios.interceptors.request.use((request) => {
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     if (token) {
         request.headers.common['Authorization'] = `Bearer ${token}`;
     }

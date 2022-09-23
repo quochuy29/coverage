@@ -25,7 +25,6 @@
     check() {
         const auth = JSON.parse(localStorage.getItem('auth_user'));
         if (auth === null || typeof(auth) === "undefined") {
-            console.log(1);
             this.$router.push({ path: '/login' })
         }
     }

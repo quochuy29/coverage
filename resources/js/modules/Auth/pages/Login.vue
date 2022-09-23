@@ -3,7 +3,7 @@
     <div class="container">
       <div class="login__screen">
         <div class="login__logo">
-          <img src="assets/images/logo-name.png" alt="Coverage" />
+          <img src="/assets/images/logo-name.png" alt="Coverage" />
         </div>
         <div v-if="error" class="login__error">
           <p>{{ error }}</p>
@@ -50,9 +50,9 @@
 
             try {
               const response = await axios.post('auth/login', postData);
-              localStorage.setItem('token', response.data.access_token);
-              localStorage.setItem('auth_user', JSON.stringify(response.data.auth_user));
-              this.$router.push('app');
+              sessionStorage.setItem('token', response.data.access_token);
+              sessionStorage.setItem('auth_user', JSON.stringify(response.data.auth_user));
+              this.$router.push({name: 'homepage'});
             } catch (error) {
               this.error = error.response.data.message;
             }

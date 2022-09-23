@@ -5,11 +5,5 @@
 <script>
   export default {
     name: "mainApp",
-    data() {
-      return {
-
-      }
-    },
-    methods: {},
   };
 </script>

@@ -1,7 +1,6 @@
 <template>
     <div class="ola">
-        olaa
-        <router-link :to="{ name: 'login'}">alo</router-link>
+       <router-view></router-view>
     </div>
 </template>
 

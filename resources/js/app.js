@@ -32,16 +32,10 @@ function importModuleComponents(context) {
 importModuleComponents(require.context('../../resources/js/modules', true, /\.vue$/i));
 
 function loggedIn() {
-  return localStorage.getItem('token')
+  return sessionStorage.getItem('token')
 }
 
 router.beforeEach((to, from, next) => {
-  if (to.path == "/") {
-    next({
-      path: '/login'
-    })
-  }
-
   if (to.matched.some(record => record.meta.requiresAuth)) {
       if (loggedIn() == null) {
           next({
@@ -61,7 +55,7 @@ router.beforeEach((to, from, next) => {
           next()
       }
   } else {
-      next()
+    next()
   }
 })
 

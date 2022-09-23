@@ -3,7 +3,7 @@
     <nav class="nav">
       <div class="nav__user">
             <div class="nav__user-image">
-            <img :src="`${user.member_avatar}`" loading="lazy" alt="profile">
+            <img :src="`/${user.member_avatar}`" loading="lazy" alt="profile">
             </div>
 
             <div class="nav__user-info">
@@ -15,17 +15,17 @@
 
       <ul class="nav__list">
         <li class="nav__item">
-          <a href="#" class="nav__link active" id="js__change">
+          <router-link :to="{name:'test'}" class="nav__link active" id="js__change">
             <a class="fa-solid fa-house nav__icon"></a>
             <span class="nav__name">Dashboard</span>
-          </a>
+          </router-link>
         </li>
 
         <li class="nav__item">
-          <a href="#" class="nav__link" id="js__change">
+          <router-link :to="{name:'userIndex'}" class="nav__link" id="js__change">
             <a class="fa-solid fa-comments nav__icon"></a>
             <span class="nav__name">Messenger</span>
-          </a>
+          </router-link>
         </li>
 
         <li class="nav__item">

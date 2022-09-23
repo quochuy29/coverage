@@ -295,6 +295,43 @@
     max-width: 100%;
   }
 }
+.user__list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+.user__list .user__info {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+}
+.user__list .user__info:last-child {
+  border-bottom: none;
+}
+.user__list .list-info__user {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+}
+.user__list .list-info__user .cursor-info {
+  cursor: pointer;
+}
+.user__list .list-info__user .cursor-info.selected {
+  color: var(--color-primary);
+}
+.user__list .list-info__user .icon__arw__sort svg {
+  width: 8px;
+  fill: #ddd;
+}
+.user__list .list-info__user .icon__arw__sort.ascending svg {
+  fill: var(--color-primary);
+}
+.user__list .list-info__user .icon__arw__sort.descending svg {
+  fill: var(--color-primary);
+}
+.user__list__info {
+  width: calc(100% / 3);
+  padding: 5px;
+}
 header {
   display: flex;
 }

@@ -1,0 +1,46 @@
+.user__list {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    .user__info {
+        display: flex;
+        border-bottom: 1px solid #ddd;
+        &:last-child {
+            border-bottom: none;
+        }
+    }
+
+    .list-info__user {
+        display: flex;
+        border-bottom: 1px solid #ddd;
+        .cursor-info {
+            cursor: pointer;
+            &.selected{
+                color: var(--color-primary);
+            }
+        }
+
+        .icon__arw__sort {
+            svg {
+                width: 8px;
+                fill: #ddd;
+            }
+            &.ascending {
+                svg {
+                    fill: var(--color-primary);
+                }
+            }
+            &.descending {
+                svg {
+                    fill: var(--color-primary);
+                }
+            }
+        }
+    }
+
+    &__info {
+        width: calc(100% / 3);
+        padding: 5px;
+    }
+}
