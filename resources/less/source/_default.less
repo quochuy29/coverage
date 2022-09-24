@@ -1,17 +1,75 @@
-*,
-::before,
+* ,body ,
+::before ,
 ::after {
   box-sizing: border-box;
 }
 
+html, #app {
+    height: 100%;
+}
+
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+form,
+fieldset,
+input,
+textarea,
+p,
+blockquote,
+th,
+td,
+figure {
+  margin: 0;
+  padding: 0;
+}
+
 .coverage {
-    position: relative;
-    margin: 0;
-    font-family: 'ncctf5';
-    font-size: 2rem;
-    transition: 0.5s;
+  a {
+    color: #333;
+    text-decoration: none;
+    transition: color 200ms cubic-bezier(0,0,.58,1);
+    will-change: color;
+    &:hover {
+      color: var(--color-primary);
+      .icon {
+          svg {
+              fill: var(--color-primary)
+          }
+      }
+    }
+  }
+
+  height: 100%;
+  position: relative;
+  margin: 0;
+  font-family: 'ncctf5';
+  font-size: 2rem;
+  transition: 0.5s;
   .main {
       display: flex;
+      height: 584px;
       width: 100%;
+
+      .ola {
+        overflow: auto;
+      }
+  }
+  .container-fluid {
+    height: 100%;
+    padding: 0;
   }
 }
+

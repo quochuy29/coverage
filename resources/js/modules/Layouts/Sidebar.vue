@@ -2,38 +2,37 @@
   <div class="sidenav-container" id="side-nav">
     <nav class="nav">
       <div class="nav__user">
-            <div class="nav__user-image">
-            <img :src="`/${user.member_avatar}`" loading="lazy" alt="profile">
-            </div>
+          <div class="nav__user-image">
+              <img :src="`/${user.member_avatar}`" loading="lazy" alt="profile">
+          </div>
 
-            <div class="nav__user-info">
-            <div class="nav__user-info-name">{{ user.member_login_name }}</div>
-            <div class="nav__user-info-email">{{ user.member_email }}</div>
-            </div>
+          <div class="nav__user-info">
+              <div class="nav__user-info-name">{{ user.member_login_name }}</div>
+              <div class="nav__user-info-email">{{ user.member_email }}</div>
+          </div>
       </div>
-      <hr>
 
       <ul class="nav__list">
         <li class="nav__item">
-          <router-link :to="{name:'test'}" class="nav__link active" id="js__change">
-            <a class="fa-solid fa-house nav__icon"></a>
-            <span class="nav__name">Dashboard</span>
-          </router-link>
+            <router-link :to="{name:'test'}" class="nav__link active" id="js__change">
+                <a class="fa-solid fa-house nav__icon"></a>
+                <span class="nav__name">Dashboard</span>
+            </router-link>
         </li>
 
         <li class="nav__item">
-          <router-link :to="{name:'userIndex'}" class="nav__link" id="js__change">
-            <a class="fa-solid fa-comments nav__icon"></a>
-            <span class="nav__name">Messenger</span>
-          </router-link>
+            <router-link :to="{name:'userIndex'}" class="nav__link" id="js__change">
+                <a class="fa-solid fa-comments nav__icon"></a>
+                <span class="nav__name">Messenger</span>
+            </router-link>
         </li>
 
         <li class="nav__item">
-          <a href="#" class="nav__link" id="js__change">
-            <a class="fa-solid fa-folder nav__icon"></a>
-            <span class="nav__name">Projects</span>
-            <a class="fa-solid fa-chevron-down toggle-icon"></a>
-          </a>
+            <a href="#" class="nav__link" id="js__change">
+                <a class="fa-solid fa-folder nav__icon"></a>
+                <span class="nav__name">Projects</span>
+                <a class="fa-solid fa-chevron-down toggle-icon"></a>
+            </a>
 
           <ul class="nav__drop">
             <div class="padding">

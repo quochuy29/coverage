@@ -1,6 +1,7 @@
 import Main from '../modules/Layouts/Main.vue';
 import Test from '../modules/App/pages/Test.vue';
 import UserIndex from '../modules/User/pages/index.vue';
+import DetailUser from '../modules/User/pages/detail.vue';
 import Login from '../modules/Auth/pages/Login.vue';
 import Page404 from '../modules/Layouts/404.vue';
 export default {
@@ -24,6 +25,13 @@ export default {
           path: 'user',
           component: UserIndex,
           name: 'userIndex',
+          meta: { requiresAuth: false }
+        },
+        {
+          path: 'user/:id',
+          component: DetailUser,
+          name: 'detail-user',
+          props: route => ({ id: Number(route.params.id) }),
           meta: { requiresAuth: false }
         }
       ]

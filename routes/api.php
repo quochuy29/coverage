@@ -29,5 +29,6 @@ Route::prefix('auth')
 Route::prefix('member')
 ->controller(MemberController::class)
 ->group(function () {
-    Route::get('', 'index');
+    Route::get('', 'index')->middleware('auth:sanctum');
+    Route::get('detail/{id}', 'getDetailMember')->middleware('auth:sanctum');
 });

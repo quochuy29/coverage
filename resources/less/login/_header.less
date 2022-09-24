@@ -1,7 +1,11 @@
 header {
     display: flex;
+    border-bottom: 1px solid #ddd;
     .nav__brand {
         width: 70%;
+        border-right: 1px solid #ddd;
+        padding-right: 15px;
+        padding-left: 15px;
     }
     .nav__user {
         width: 30%;
@@ -10,6 +14,8 @@ header {
         column-gap: 5px;
         padding: 0.75rem 0;
         border-radius: 2rem;
+        padding-right: 15px;
+        padding-left: 15px;
         cursor: pointer;
         
         &-image {
@@ -51,6 +57,7 @@ header {
     header {
         .nav__brand {
             width: 100%;
+            border: 0;
         }
         .nav__user {
             display: none;

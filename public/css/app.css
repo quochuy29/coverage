@@ -5,26 +5,81 @@
   font-style: normal;
 }
 *,
+body,
 ::before,
 ::after {
   box-sizing: border-box;
 }
+html,
+#app {
+  height: 100%;
+}
+body,
+div,
+dl,
+dt,
+dd,
+ul,
+ol,
+li,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+pre,
+form,
+fieldset,
+input,
+textarea,
+p,
+blockquote,
+th,
+td,
+figure {
+  margin: 0;
+  padding: 0;
+}
 .coverage {
+  height: 100%;
   position: relative;
   margin: 0;
   font-family: 'ncctf5';
   font-size: 2rem;
   transition: 0.5s;
 }
+.coverage a {
+  color: #333;
+  text-decoration: none;
+  transition: color 200ms cubic-bezier(0, 0, 0.58, 1);
+  will-change: color;
+}
+.coverage a:hover {
+  color: var(--color-primary);
+}
+.coverage a:hover .icon svg {
+  fill: var(--color-primary);
+}
 .coverage .main {
   display: flex;
+  height: 584px;
   width: 100%;
+}
+.coverage .main .ola {
+  overflow: auto;
+}
+.coverage .container-fluid {
+  height: 100%;
+  padding: 0;
 }
 .sidenav-container {
   width: 12rem;
   background-color: #fff;
   transition: width 0.2s ease;
   z-index: 10;
+  border: 1px solid #ddd;
+  border-top: 0;
 }
 .nav__brand {
   display: grid;
@@ -56,7 +111,7 @@
   grid-template-columns: max-content 1fr;
   -moz-column-gap: 5px;
        column-gap: 5px;
-  padding: 0.75rem 0;
+  padding: 0.75rem 1px;
   border-radius: 2rem;
   cursor: pointer;
 }
@@ -295,48 +350,171 @@
     max-width: 100%;
   }
 }
-.user__list {
+.list__content_user {
+  padding: 20px;
+}
+.list__content_user .search__user {
+  padding-bottom: 20px;
+}
+.list__content_user .search__user .search__form {
+  display: flex;
+  position: relative;
+}
+.list__content_user .search__user .search__form .btn-search {
+  width: 100%;
+  height: 100%;
+  padding: 5px 32px 4px 10px;
+  font-size: 2rem;
+  background-color: #fff;
+  border: 1px solid #dfe4ea;
+  border-radius: 5px;
+}
+.list__content_user .search__user .search__form .btn-search:focus {
+  outline: none;
+}
+.list__content_user .search__user .search__form .btn-search::-moz-placeholder {
+  font-size: 2rem;
+}
+.list__content_user .search__user .search__form .btn-search::placeholder {
+  font-size: 2rem;
+}
+.list__content_user .search__user .search__form label {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 43px;
+  cursor: pointer;
+}
+.list__content_user .search__user .search__form label .submit {
+  display: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: none;
+  background: 0 0;
+  color: #333;
+  font-family: inherit;
+  font-size: inherit;
+}
+.list__content_user .search__user .search__form label span {
+  font-size: 0;
+}
+.list__content_user .search__user .search__form label span svg {
+  width: 12px;
+}
+.list__content_user .user__list {
   display: flex;
   flex-direction: column;
   border: 1px solid #ddd;
   border-radius: 3px;
 }
-.user__list .user__info {
+.list__content_user .user__list .user__info {
   display: flex;
   border-bottom: 1px solid #ddd;
+  padding-right: 20px;
 }
-.user__list .user__info:last-child {
+.list__content_user .user__list .user__info:last-child {
   border-bottom: none;
 }
-.user__list .list-info__user {
+.list__content_user .user__list .list-info__user {
   display: flex;
   border-bottom: 1px solid #ddd;
 }
-.user__list .list-info__user .cursor-info {
+.list__content_user .user__list .list-info__user .cursor-info {
   cursor: pointer;
 }
-.user__list .list-info__user .cursor-info.selected {
+.list__content_user .user__list .list-info__user .cursor-info.selected {
   color: var(--color-primary);
 }
-.user__list .list-info__user .icon__arw__sort svg {
+.list__content_user .user__list .list-info__user .icon__arw__sort svg {
   width: 8px;
   fill: #ddd;
 }
-.user__list .list-info__user .icon__arw__sort.ascending svg {
+.list__content_user .user__list .list-info__user .icon__arw__sort.ascending svg {
   fill: var(--color-primary);
 }
-.user__list .list-info__user .icon__arw__sort.descending svg {
+.list__content_user .user__list .list-info__user .icon__arw__sort.descending svg {
   fill: var(--color-primary);
 }
-.user__list__info {
+.list__content_user .user__list__info {
   width: calc(100% / 3);
   padding: 5px;
 }
+.user__detail {
+  padding-left: 20px;
+}
+.user__detail .mod__user_button {
+  padding: 10px 10px 10px 0px;
+  display: flex;
+}
+.user__detail .mod__user_button .btn-back {
+  margin-right: 10px;
+}
+.user__detail .mod__btn {
+  margin-top: 10px;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  outline: none;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  padding-right: 20px;
+  padding-left: 20px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #dfe4ea;
+  border-radius: 16px;
+  transition: color 200ms cubic-bezier(0, 0, 0.58, 1);
+  will-change: color;
+}
+.user__detail__info {
+  display: flex;
+  align-items: center;
+}
+.user__detail__info .user__avatar {
+  width: 120px;
+  height: 120px;
+}
+.user__detail__info .user__avatar img {
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.user__detail__info .user__info {
+  padding-left: 30px;
+  line-height: 1;
+}
+.user__detail__info .user__info .name {
+  font-size: 4rem;
+}
+.user__detail__info .user__info .user__email__phone {
+  display: flex;
+  font-size: 2rem;
+}
+.user__detail__info .user__info .user__email__phone .email {
+  padding-right: 10px;
+}
 header {
   display: flex;
+  border-bottom: 1px solid #ddd;
 }
 header .nav__brand {
   width: 70%;
+  border-right: 1px solid #ddd;
+  padding-right: 15px;
+  padding-left: 15px;
 }
 header .nav__user {
   width: 30%;
@@ -347,6 +525,8 @@ header .nav__user {
        column-gap: 5px;
   padding: 0.75rem 0;
   border-radius: 2rem;
+  padding-right: 15px;
+  padding-left: 15px;
   cursor: pointer;
 }
 header .nav__user-image {
@@ -380,6 +560,7 @@ header .nav__user-info-email:hover {
 @media only screen and (max-width: 769px) {
   header .nav__brand {
     width: 100%;
+    border: 0;
   }
   header .nav__user {
     display: none;
@@ -753,6 +934,9 @@ header .nav__user-info-email:hover {
   content: "/";
 }
 .icon svg {
+  fill: #ddd;
+}
+.icon:hover svg {
   fill: var(--color-primary);
 }
 .icon__arw__down svg {
