@@ -27,7 +27,10 @@ class Member extends Authenticatable
      */
     protected $fillable = [
         'member_login_name',
-        'member_password'
+        'member_password',
+        'member_name',
+        'member_email',
+        'member_phone_mobile'
     ];
 
     /**

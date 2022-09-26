@@ -15,7 +15,19 @@ Vue.use(VueRouter);
 window.addEventListener('load', load, false);
 
 const capitalizeFirstLetter = ([ first, ...rest ], locale = navigator.language) =>
-  first === undefined ? '' : first.toLocaleUpperCase(locale) + rest.join('')
+  first === undefined ? '' : first.toLocaleUpperCase(locale) + rest.join('');
+
+function joinComponentsUppercase(string) {
+  var UpperCaseArr = string.split(/[A-Z]+/g);
+  var lowercaseArr = string.split(/[a-z]+/g);
+  var name = '';
+  UpperCaseArr.splice(UpperCaseArr.indexOf('') , 1);
+  lowercaseArr.splice(lowercaseArr.indexOf('') , 1);
+  UpperCaseArr.forEach((value, index)=>{
+      name += `${lowercaseArr[index]}${value}-`
+  });
+  return name.substring('-', name.length - 1);
+}
 /**
  * Modules component register
  * @param {context} context
@@ -25,7 +37,7 @@ function importModuleComponents(context) {
     const keys = key.split('/');
     const component = [];
     component.push(capitalizeFirstLetter(keys[1]));
-    component.push(capitalizeFirstLetter(keys.pop().split('.')[0]));
+    component.push(joinComponentsUppercase(capitalizeFirstLetter(keys.pop().split('.')[0])));
     Vue.component(component.join('-'), context(key).default);
   }
 }
@@ -41,7 +53,6 @@ importModuleComponents(require.context('../../resources/js/modules', true, /\.vu
     const component = [];
     component.push('Common');
     component.push(capitalizeFirstLetter(keys.pop().split('.')[0]));
-    console.log(component.join('-'), context(key).default);
     Vue.component(component.join('-'), context(key).default);
   }
 }

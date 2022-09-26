@@ -31,4 +31,6 @@ Route::prefix('member')
 ->group(function () {
     Route::get('', 'index')->middleware('auth:sanctum');
     Route::get('detail/{id}', 'getDetailMember')->middleware('auth:sanctum');
+    Route::put('edit/{id}', 'edit')->middleware('auth:sanctum');
+    Route::delete('delete/{id}', 'delete')->middleware('auth:sanctum');
 });

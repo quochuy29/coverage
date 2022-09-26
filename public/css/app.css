@@ -68,6 +68,7 @@ figure {
 }
 .coverage .main .ola {
   overflow: auto;
+  background-color: #f4f4f5;
 }
 .coverage .container-fluid {
   height: 100%;
@@ -449,6 +450,7 @@ figure {
 }
 .user__detail {
   padding-left: 20px;
+  padding-right: 20px;
 }
 .user__detail .mod__user_button {
   padding: 10px 10px 10px 0px;
@@ -480,6 +482,7 @@ figure {
 .user__detail__info {
   display: flex;
   align-items: center;
+  padding-top: 20px;
 }
 .user__detail__info .user__avatar {
   width: 120px;
@@ -505,6 +508,46 @@ figure {
 }
 .user__detail__info .user__info .user__email__phone .email {
   padding-right: 10px;
+}
+.user-info__detail {
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #dfe4ea;
+  margin-top: 40px;
+}
+.user-info__detail .user__info {
+  display: flex;
+  border-bottom: 1px solid #dfe4ea;
+}
+.user-info__detail .user__info:last-child {
+  border-bottom: none;
+}
+.user-info__detail .user__info .user-info {
+  width: 50%;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.user-info__detail .user__info .info-detail {
+  width: 50%;
+}
+.user-info__detail .user__info .info-detail input {
+  height: 35px;
+  width: 250px;
+  border-radius: 5px;
+  outline: none;
+  border: 1px solid #ddd;
+  padding-left: 10px;
+}
+.tab-user {
+  margin-top: 40px;
+}
+.tab-user .action-tab-user,
+.tab-user .edit {
+  display: flex;
+}
+.tab-user .action-tab-user .btn-cancel__user,
+.tab-user .edit .btn-cancel__user {
+  margin-right: 10px;
 }
 header {
   display: flex;

@@ -114,6 +114,7 @@
 
 .user__detail {
     padding-left: 20px;
+    padding-right: 20px;
 
     .mod__user_button{
         padding: 10px 10px 10px 0px;
@@ -146,6 +147,7 @@
     &__info {
         display: flex;
         align-items: center;
+        padding-top: 20px;
 
         .user__avatar {
             width: 120px;
@@ -175,6 +177,53 @@
                     padding-right: 10px;
                 }
             }
+        }
+    }
+}
+
+.user-info__detail {
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid #dfe4ea;
+    margin-top: 40px;
+    
+    .user__info {
+        display: flex;
+        border-bottom: 1px solid #dfe4ea;
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        .user-info {
+            width: 50%;
+            padding-right: 20px;
+            padding-left: 20px;
+        }
+        
+        .info-detail {
+            width: 50%;
+
+            input {
+                height: 35px;
+                width: 250px;
+                border-radius: 5px;
+                outline: none;
+                border: 1px solid #ddd;
+                padding-left: 10px;
+            }
+        }
+    }
+}
+
+.tab-user {
+    margin-top: 40px;
+
+    .action-tab-user, .edit {
+        display: flex;
+
+        .btn-cancel__user {
+            margin-right: 10px;
         }
     }
 }
