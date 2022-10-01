@@ -5,14 +5,27 @@ import routes from './routes/routes';
 import {BootstrapVue} from 'bootstrap-vue';
 import '@/plugins';
 import App from './app.vue';
-window.Vue = require('vue').default;
-const router = new VueRouter(routes);
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import load from '@/WindowLoad/load';
+import firebase from "firebase/app";
+
+window.Vue = require('vue').default;
+const router = new VueRouter(routes);
 Vue.use(BootstrapVue);
 Vue.use(VueRouter);
 window.addEventListener('load', load, false);
+const firebaseConfig = {
+  apiKey: "AIzaSyCgXxMIZRD4o0IlTsNTahsKjb40BYUnkWA",
+  authDomain: "coverage-3d0f9.firebaseapp.com",
+  projectId: "coverage-3d0f9",
+  storageBucket: "coverage-3d0f9.appspot.com",
+  messagingSenderId: "460731516702",
+  appId: "1:460731516702:web:fb03f62c9911ca967fab0f",
+  measurementId: "G-E81JW13QP8"
+};
+
+firebase.initializeApp(firebaseConfig);
 
 const capitalizeFirstLetter = ([ first, ...rest ], locale = navigator.language) =>
   first === undefined ? '' : first.toLocaleUpperCase(locale) + rest.join('');

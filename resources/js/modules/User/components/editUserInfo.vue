@@ -17,6 +17,17 @@
             </div>
         </div>
         <div class="user__info">
+            <div class="info__name user-info">
+                Member avatar
+            </div>
+            <div class="info__email__detail info-detail">
+                <input type="file" @change="changeAvatar" class="input__file">
+                <div v-if="imageData != null">                     
+                    <button class="mod__btn" @click="onUpload">Upload</button>
+                </div>   
+            </div>
+        </div>
+        <div class="user__info">
             <div class="info__member__password user-info">
                 Member password
             </div>
@@ -52,6 +63,8 @@
 </template>
 
 <script>
+    import firebase from 'firebase';
+    
     export default {
         props: {
             member: {
@@ -61,8 +74,47 @@
         },
         data() {
             return {
-                memberInfo: this.member
+                memberInfo: this.member,
+                uploadValue: 0,
+                picture: null,
+                imageData: null
             }
-        }
+        },
+        methods: {
+            changeAvatar(event) {
+                this.uploadValue = 0;
+                this.picture = null;
+                this.imageData = event.target.files[0];
+            },
+        
+            onUpload() {
+                const storageRef = firebase.storage().ref(`${this.imageData.name}`).put(this.imageData);
+                storageRef.on(`state_changed`, snapshot =>
+                {
+                    console.log(snapshot.bytesTransferred/snapshot.totalBytes);
+                    this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+                }, 
+                error=>{
+                    console.log(error.message)
+                },
+                () => {
+                    this.uploadValue = 100;
+                    storageRef.snapshot.ref.getDownloadURL().then(async (url) => {
+                        this.picture = await url;
+                        this.$emit('change-avatar', this.picture);
+                    });
+                });
+
+            }
+        },
     }
 </script>
+<style lang="less">
+    .user-info__detail {
+        margin-bottom: 40px;
+    }
+
+    .input__file {
+        line-height: 27px;
+    }
+</style>

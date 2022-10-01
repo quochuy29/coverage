@@ -126,7 +126,6 @@
     }
 
     .mod__btn {
-        margin-top: 10px;
         appearance: none;
         outline: none;
         display: flex;
@@ -204,7 +203,7 @@
         .info-detail {
             width: 50%;
 
-            input {
+            input[type=text], input[type=password], input[type=file] {
                 height: 35px;
                 width: 250px;
                 border-radius: 5px;
@@ -217,7 +216,12 @@
 }
 
 .tab-user {
+    background-color: #f4f4f5;
+    position: sticky;
+    top: 0;
+    z-index: 100000;
     margin-top: 40px;
+    padding: 10px 0;
 
     .action-tab-user, .edit {
         display: flex;

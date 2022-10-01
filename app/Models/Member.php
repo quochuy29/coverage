@@ -8,6 +8,7 @@ use App\Scopes\DeleteScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\HasApiTokens;
 
 class Member extends Authenticatable
@@ -27,10 +28,11 @@ class Member extends Authenticatable
      */
     protected $fillable = [
         'member_login_name',
-        'member_password',
         'member_name',
         'member_email',
-        'member_phone_mobile'
+        'member_phone_mobile',
+        'member_password',
+        'member_avatar'
     ];
 
     /**
@@ -43,6 +45,11 @@ class Member extends Authenticatable
     protected static function booted()
     {
         static::addGlobalScope(new DeleteScope());
+    }
+
+    public function setMemberPasswordAttribute($value)
+    {
+        $this->attributes['member_password'] = Hash::make($value);
     }
 
 }

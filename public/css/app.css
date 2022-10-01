@@ -460,7 +460,6 @@ figure {
   margin-right: 10px;
 }
 .user__detail .mod__btn {
-  margin-top: 10px;
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -530,7 +529,9 @@ figure {
 .user-info__detail .user__info .info-detail {
   width: 50%;
 }
-.user-info__detail .user__info .info-detail input {
+.user-info__detail .user__info .info-detail input[type=text],
+.user-info__detail .user__info .info-detail input[type=password],
+.user-info__detail .user__info .info-detail input[type=file] {
   height: 35px;
   width: 250px;
   border-radius: 5px;
@@ -539,7 +540,13 @@ figure {
   padding-left: 10px;
 }
 .tab-user {
+  background-color: #f4f4f5;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 100000;
   margin-top: 40px;
+  padding: 10px 0;
 }
 .tab-user .action-tab-user,
 .tab-user .edit {

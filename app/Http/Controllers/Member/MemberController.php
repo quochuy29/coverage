@@ -4,10 +4,18 @@ namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
 use App\Models\Member;
+use App\Service\Member\MemberService;
 use Illuminate\Http\Request;
 
 class MemberController extends Controller
 {
+    protected $memberService;
+
+    public function __construct()
+    {
+        $this->memberService = new MemberService();
+    }
+
     public function index(Request $request)
     {
         $query = Member::select('member_id', 'member_name', 'member_email', 'member_phone_mobile')
@@ -30,7 +38,10 @@ class MemberController extends Controller
     public function edit($id, Request $request)
     {
         $member = Member::findOrFail($id);
-        $member->fill($request->member);
+        if ($request->member_password !== null && (string)$request->member_password !== '') {
+            $this->memberService->saveMemberPasswordHistory($member);
+        }
+        $member->fill($request->all());
         $member->member_reset_pwd_is_required = 1;
         $member->save();
 

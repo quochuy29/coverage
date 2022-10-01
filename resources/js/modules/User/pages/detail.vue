@@ -14,7 +14,7 @@
         </div>
         <div class="user__detail__info">
             <div class="user__avatar">
-                <img :src="`${member.member_avatar}`" alt="">
+                <img class="avatar" :src="(avatar == null) ? `${member.member_avatar}` : avatar" alt="">
             </div>
             <div class="user__info">
                 <div class="name">
@@ -55,7 +55,7 @@
             </div>
         </div>
         <User-View-User-Info v-if="!isEdit" :member="member"></User-View-User-Info>
-        <User-Edit-User-Info v-else :member="member"></User-Edit-User-Info>
+        <User-Edit-User-Info @change-avatar="changeAvatar" v-else :member="member"></User-Edit-User-Info>
     </div>
 </template>
 
@@ -65,7 +65,8 @@
             return {
                 member: {},
                 loading: false,
-                isEdit: false
+                isEdit: false,
+                avatar: null
             }
         },
         props: {
@@ -83,7 +84,7 @@
                     const member = await axios.get(`member/detail/${this.id}`);
                     this.loading = true;
                     this.member = member.data;
-                    if (this.member.member_avatar === '' || this.member.member_avatar !== null) {
+                    if (this.member.member_avatar === '' || this.member.member_avatar === null) {
                         this.member.member_avatar = 'http://localhost:8080/assets/images/271_fb902c8.jpg';
                     }
                 } catch (error) {
@@ -109,11 +110,21 @@
             },
             async saveEdit() {
                 try {
-                    console.log(this.member);
-                    // const member = await axios.put(`member/edit/${this.id}`);
-                    // this.isEdit = false;
+                    const member = await axios.put(`member/edit/${this.id}`, this.member);
+                    this.member = member.data
+                    if (this.member.member_avatar === '' || this.member.member_avatar !== null) {
+                        this.member.member_avatar = 'http://localhost:8080/assets/images/271_fb902c8.jpg';
+                    }
+                    this.isEdit = false;
                 } catch (error) {
                     console.log(error);
+                }
+            },
+            changeAvatar(avatar) {
+                console.log(avatar);
+                if (avatar !== null && avatar !== '') {
+                    this.avatar = avatar;
+                    this.member.member_avatar = avatar;
                 }
             }
         },

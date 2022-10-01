@@ -1,15 +1,17 @@
 <template>
     <div>
-huy
     </div>
 </template>
 
 <script>
     export default {
-        
+        name: 'Upload',
+        data(){	  
+            return{
+            }
+        },
     }
 </script>
 
-<style lang="scss" scoped>
-
+<style lang="less" scoped>
 </style>
