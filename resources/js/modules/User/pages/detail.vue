@@ -85,7 +85,7 @@
                     this.loading = true;
                     this.member = member.data;
                     if (this.member.member_avatar === '' || this.member.member_avatar === null) {
-                        this.member.member_avatar = 'http://localhost:8080/assets/images/271_fb902c8.jpg';
+                        this.member.member_avatar = 'assets/images/271_fb902c8.jpg';
                     }
                 } catch (error) {
                     console.log(error);
@@ -95,14 +95,13 @@
                 this.$router.push({name: 'userIndex'})
             },
             async deleteUser() {
-                if (confirm('You want to delete this user ? right ?')) {
-                    try {
-                        const member = await axios.delete(`member/delete/${this.id}`);
-                        this.$router.push({name: 'userIndex'});
-                    } catch (error) {
-                        alert('Delete this user not successfully!');
-                        console.log(error);
-                    }
+                try {
+                    const member = await axios.delete(`member/delete/${this.id}`);
+                    this.showToast(member.data.message);
+                    // this.$router.push({name: 'userIndex'});
+                } catch (error) {
+                    alert('Delete this user not successfully!');
+                    console.log(error);
                 }
             },
             changeEdit() {
@@ -126,7 +125,24 @@
                     this.avatar = avatar;
                     this.member.member_avatar = avatar;
                 }
-            }
-        },
+            },
+            // showToast(message) {
+            //     const h = this.$createElement;
+            //     const vNodesMsg = h('div', {class: ['js-action-window', 'action-window', 'is-active']}, [
+            //         h('button', {
+            //         class: ['js-action-window__close', 'action-window__close'],
+            //         on: {click: () => this.$bvToast.hide()}}, [
+            //         h('img', {attrs: {src: '/images/icon_cross.svg'}})
+            //         ]),
+            //         h('div', {class: ['action-window__message']}, [h('p', `${message}`)])
+            //     ]);
+
+            //     this.$bvToast.toast(vNodesMsg, {
+            //         autoHideDelay: 5000,
+            //         noCloseButton: true
+            //     });
+
+            // }
+        }
     }
 </script>

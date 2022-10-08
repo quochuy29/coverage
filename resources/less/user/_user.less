@@ -1,11 +1,15 @@
 .list__content_user {
-    padding: 20px;
-
     .search__user {
-        padding-bottom: 20px;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        background-color: #f4f4f5;
+        border-bottom: 1px solid #dfe4ea;
+
         .search__form {
             display: flex;
             position: relative;
+            padding: 20px;
 
             .btn-search {
                 width: 100%;
@@ -27,8 +31,7 @@
 
             label {
                 position: absolute;
-                top: 0;
-                right: 0;
+                right: 3%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -60,6 +63,10 @@
                 }
             }
         }
+    }
+
+    .main__content {
+        padding: 20px;
     }
 
     .user__list {
@@ -108,7 +115,14 @@
         &__info { 
             width: calc(100% / 3);
             padding: 5px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
+    }
+
+    .mod__page {
+        padding: 20px;
     }
 }
 

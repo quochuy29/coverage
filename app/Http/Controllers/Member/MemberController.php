@@ -50,9 +50,17 @@ class MemberController extends Controller
 
     public function delete($id)
     {
-        $member = Member::findOrFail($id);
-        $member->member_is_deleted = 1;
+        try {
+            $member = Member::findOrFail($id);
+            $member->member_is_deleted = 0;
+            $member->save();
 
-        return $member->save();
+            return response()->json([
+                'status' => 200,
+                'message' => "Delete user {$member->member_login_name} successfully!"
+            ]);
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
     }
 }

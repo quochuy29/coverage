@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 import routes from './routes/routes';
 import {BootstrapVue} from 'bootstrap-vue';
 import '@/plugins';
+import 'vue-toast-notification/dist/theme-sugar.css';
 import App from './app.vue';
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
@@ -11,8 +12,8 @@ import load from '@/WindowLoad/load';
 import firebase from "firebase/app";
 
 window.Vue = require('vue').default;
-const router = new VueRouter(routes);
 Vue.use(BootstrapVue);
+const router = new VueRouter(routes);
 Vue.use(VueRouter);
 window.addEventListener('load', load, false);
 const firebaseConfig = {

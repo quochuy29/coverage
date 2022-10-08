@@ -23,7 +23,7 @@
         <li class="nav__item">
             <router-link :to="{name:'userIndex'}" class="nav__link" id="js__change">
                 <a class="fa-solid fa-comments nav__icon"></a>
-                <span class="nav__name">Messenger</span>
+                <span class="nav__name">Members</span>
             </router-link>
         </li>
 
