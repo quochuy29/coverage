@@ -97,11 +97,10 @@
             async deleteUser() {
                 try {
                     const member = await axios.delete(`member/delete/${this.id}`);
-                    this.showToast(member.data.message);
-                    // this.$router.push({name: 'userIndex'});
+                    localStorage.setItem('redirectMessage', JSON.stringify({'action': 'delete_user', 'msg': member.data.message}));
+                    this.$router.push({name: 'userIndex'});
                 } catch (error) {
-                    alert('Delete this user not successfully!');
-                    console.log(error);
+                    this.showToast(member.data.message);
                 }
             },
             changeEdit() {
@@ -120,29 +119,11 @@
                 }
             },
             changeAvatar(avatar) {
-                console.log(avatar);
                 if (avatar !== null && avatar !== '') {
                     this.avatar = avatar;
                     this.member.member_avatar = avatar;
                 }
-            },
-            // showToast(message) {
-            //     const h = this.$createElement;
-            //     const vNodesMsg = h('div', {class: ['js-action-window', 'action-window', 'is-active']}, [
-            //         h('button', {
-            //         class: ['js-action-window__close', 'action-window__close'],
-            //         on: {click: () => this.$bvToast.hide()}}, [
-            //         h('img', {attrs: {src: '/images/icon_cross.svg'}})
-            //         ]),
-            //         h('div', {class: ['action-window__message']}, [h('p', `${message}`)])
-            //     ]);
-
-            //     this.$bvToast.toast(vNodesMsg, {
-            //         autoHideDelay: 5000,
-            //         noCloseButton: true
-            //     });
-
-            // }
+            }
         }
     }
 </script>

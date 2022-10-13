@@ -4,7 +4,8 @@ namespace App\Service\Member;
 
 use App\Models\MemberHistoryPassword;
 
-class MemberService {
+class MemberService
+{
     
     public function saveMemberPasswordHistory($member)
     {

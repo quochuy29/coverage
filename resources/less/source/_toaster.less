@@ -1,0 +1,59 @@
+.toast:not(.show) {
+    display: block !important;
+}
+
+.b-toaster {
+    position: absolute;
+    top: -100%;
+}
+
+.action-window.is-active {
+    z-index: 99999999999999999;
+    height: auto;
+    overflow: auto;
+    opacity: 1;
+}
+.action-window {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    z-index: -1;
+    width: 280px;
+    height: 0;
+    padding: 10px 40px 10px 15px;
+    overflow: hidden;
+    background-color: rgba(86, 195, 37, 0.95);
+    border-radius: 5px;
+    opacity: 0;
+}
+.action-window__close {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    outline: none;
+    background: transparent;
+    color: #333;
+    font-family: inherit;
+    font-size: inherit;
+    position: absolute;
+    top: 15.468px;
+    right: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    cursor: pointer;
+}
+.action-window__message {
+    font-size: 1.5rem;
+    font-weight: 500;
+    line-height: 1.5384615385;
+    color: #fff;
+    p {
+        margin: 0;
+    }
+}

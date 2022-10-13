@@ -45,10 +45,20 @@ export default {
             pagination: {}
         }
     },
+    async created() {
+        await this.checkMessage();
+    },
     mounted() {
         this.getMember();
     },
     methods: {
+        checkMessage() {
+            const message = JSON.parse(localStorage.getItem('redirectMessage'));
+            if (message.action === 'delete_user') {
+                this.showToast(message.msg);
+            }
+            localStorage.removeItem('redirectMessage');
+        },
         async getMember() {
             try {
                 const member = await axios.get('member', {params: this.params});

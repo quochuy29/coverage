@@ -33,4 +33,7 @@ Route::prefix('member')
     Route::get('detail/{id}', 'getDetailMember')->middleware('auth:sanctum');
     Route::put('edit/{id}', 'edit')->middleware('auth:sanctum');
     Route::delete('delete/{id}', 'delete')->middleware('auth:sanctum');
+    Route::get('export', 'exportCSV')->middleware('auth:sanctum');
+    Route::post('upload-file', 'uploadFile')->middleware('auth:sanctum');
+    Route::post('import', 'importFile')->middleware('auth:sanctum');
 });
