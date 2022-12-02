@@ -69,8 +69,9 @@ class ValidateFileCsv
             0 => "member code",
             1 => "member name",
             2 => "member login name",
-            3 => "member email",
-            4 => "member phone mobile"
+            3 => "member password",
+            4 => "member email",
+            5 => "member phone mobile"
           ];
     }
 
@@ -82,6 +83,53 @@ class ValidateFileCsv
         return true;
     }
 
+    public function validateFormatDataCsv($validator, $dataMemberTemp, &$aryError)
+    {
+        $fieldItem = resolve(ImportMember::class)->getItemTranfer();
+        $fileHeader = $this->fieldFileHeader();
+        $aryError = [];
+        try {
+            while ($record = $dataMemberTemp->fetch(\PDO::FETCH_ASSOC)) {
+                $row = $record['id'] + 1;
+                unset($record['id']);
+                $data = $this->prepareData(array_values($record), $row, $fieldItem, $fileHeader);
+                $validator->setData($data);
+                $validator->validate();
+
+                if (!$validator->isValid()) {
+                    $aryError = array_merge($aryError, $validator->getError());
+                    $validator->emptyError();
+                }
+            }
+            if (!empty($aryError)) {
+                return 0;
+            }
+        } catch (\Exception $e) {
+            return [
+                'success' => false,
+                'message' => $e->getMessage(),
+                'code' => 500
+            ];
+        }
+    }
+
+    public function prepareData(array $recordData, $row, $fieldItem, $fieldHeader)
+    {
+        $formatedData = [];
+        foreach ($recordData as $key => $cellData) {
+            $value = is_null($cellData) ? '' : $cellData;
+            $header = $fieldHeader[$key] ?? '';
+            $field = $fieldItem[$key] ?? '';
+            $formatedData[$field] = [
+                'value' => $value,
+                'header' => $header,
+                'field' => $field,
+                'col' => $key + 1,
+                'row' => $row
+            ];
+        }
+        return $formatedData;
+    }
 
 }
 

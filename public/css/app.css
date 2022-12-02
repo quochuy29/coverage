@@ -115,6 +115,15 @@ h1,
   font-weight: 500;
   line-height: normal !important;
 }
+input[type="checkbox"] {
+  width: 36px;
+  height: 18px;
+  background-color: #fff;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
 .coverage {
   height: 100%;
   position: relative;
@@ -724,7 +733,7 @@ h1,
 }
 .mod__modal__header .title {
   margin-right: auto;
-  font-size: 1.6rem;
+  font-size: 2rem;
   font-weight: 700;
 }
 .mod__modal__header__btns {

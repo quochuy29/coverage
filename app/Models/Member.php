@@ -18,6 +18,7 @@ class Member extends Authenticatable
     public $timestamps = false;
     
     const DELETE_FLAG = 'member_is_deleted';
+    const TABLE_MEMBER = 'members';
 
     protected $primaryKey = 'member_id';
 
