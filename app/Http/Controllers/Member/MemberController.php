@@ -83,7 +83,7 @@ class MemberController extends Controller
 
     public function exportCSV(Request $request)
     {
-        if(trim((string) $request->user_quantity) === '' || (int) $request->user_quantity < 1) {
+        if (trim((string) $request->user_quantity) === '' || (int) $request->user_quantity < 1) {
             $request->user_quantity = 100;
         }
         $member = Member::select(
