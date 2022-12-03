@@ -52,11 +52,16 @@ export default {
         this.getMember();
     },
     methods: {
-        checkMessage() {
+        async checkMessage() {
             const message = JSON.parse(localStorage.getItem('redirectMessage'));
+            if (message !== undefined) {
+                return;
+            }
+
             if (message.action === 'delete_user') {
                 this.showToast(message.msg);
             }
+            
             localStorage.removeItem('redirectMessage');
         },
         async getMember() {

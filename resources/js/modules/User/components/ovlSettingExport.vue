@@ -30,7 +30,7 @@
                                 <span class="form-check-span">
                                     Quantity
                                 </span>
-                                <input type="number" class="mod__input" id="user_quantity" v-model="user_quantity">
+                                <input type="text" class="mod__input" id="user_quantity" v-model="user_quantity">
                             </div>
                         </div>
                     </div>
