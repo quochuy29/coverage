@@ -98,8 +98,14 @@ class ImportMember
         ];
     }
 
-    public function updateMemberTable($originTable, $tempTable)
+    public function updateMemberTable($originTable, $tempTable, $deleteUnmatchRecord)
     {
+        if ($deleteUnmatchRecord == 1) {
+            $listMemberDelete = $this->dataTranfer->getNotExistUserFromTempTable($tempTable, $originTable);
+            if (!empty($listMemberDelete)) {
+                $this->dataTranfer->deleteMember($listMemberDelete);
+            }
+        }
         $resultNumberUpdateNullPassword = $this->dataTranfer->updateMemberFromTempTable($tempTable, $originTable);
         $resultNumberUpdateNotNullPassword = $this->dataTranfer->updateMemberFromTempTable($tempTable, $originTable, false);
         $resultNumberInsert = $this->dataTranfer->insertOriginTable($tempTable, $originTable);

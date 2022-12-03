@@ -198,6 +198,30 @@ class DataTranferMember
         return DB::connection()->getPdo()->exec($query);
     }
 
+    public function getNotExistUserFromTempTable($tempTable, $originTable)
+    {
+        $query = "SELECT `origin`.`member_code` 
+                FROM `$originTable` AS origin
+                LEFT JOIN `$tempTable` AS temp
+                ON `origin`.`member_login_name` = `temp`.`member_login_name`
+                WHERE `origin`.`member_is_deleted` = 0
+                AND `temp`.`member_login_name` IS NULL";
+        return DB::select($query);        
+    }
+
+    public function deleteMember($listMemberDelete)
+    {
+        $auth = auth()->user();
+        $listDelete = [];
+
+        foreach ($listMemberDelete as $memberDelete) {
+            $listDelete[] = $memberDelete->member_code;
+        }
+        return Member::where('member_code', '!=', $auth->member_code)
+        ->whereIn('member_code', $listDelete)
+        ->update(['member_is_deleted' => 1, 'member_updater_id' => $auth->member_id]);
+    }
+
 }
 
 ?>

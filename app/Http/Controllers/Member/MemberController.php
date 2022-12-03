@@ -184,10 +184,11 @@ class MemberController extends Controller
         return $fileName;
     }
 
-    public function importFile(ValidateFileCsv $validate, ValidateDataCsv $validateDataCsv)
+    public function importFile(ValidateFileCsv $validate, ValidateDataCsv $validateDataCsv, Request $request)
     {
         $path = Storage::path('csv/members.csv');
 
+        $deleteUnmatchRecord = (int)$request->delete_unmatch_record;
         $this->memberImport->excuteTempTable($path);
         $dataTranfer = resolve(DataTranferMember::class)->getDataTempTable();
         $intIsOk = $validate->validateFormatDataCsv($validateDataCsv, $dataTranfer, $aryError);
@@ -204,8 +205,16 @@ class MemberController extends Controller
             $originTable = Member::TABLE_MEMBER;
             $tempTable = 'member_temp';
 
-            $this->memberImport->executeTempTableData($tempTable);
-            list($resultNumberUpdate, $resultNumberInsert) = $this->memberImport->updateMemberTable($originTable, $tempTable);
+            try {
+                $this->memberImport->executeTempTableData($tempTable);
+                list($resultNumberUpdate, $resultNumberInsert) = $this->memberImport->updateMemberTable($originTable, $tempTable, $deleteUnmatchRecord);
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'Import member successfully'
+                ], Response::HTTP_OK);
+            } catch (\Throwable $e) {
+                throw $e;
+            }
         }
     }
 }
