@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * @author   Huypq <phanquochuyqthm@gmail.com>
+ */
 namespace App\Http\Controllers\Member;
 
 use App\Http\Controllers\Controller;
