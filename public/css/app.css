@@ -792,6 +792,7 @@ input[type="checkbox"] {
   margin-top: 20px;
 }
 .import__upload__file {
+  height: 50px;
   display: flex;
   align-items: center;
 }

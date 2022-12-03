@@ -91,10 +91,9 @@
                 const storageRef = firebase.storage().ref(`${this.imageData.name}`).put(this.imageData);
                 storageRef.on(`state_changed`, snapshot =>
                 {
-                    console.log(snapshot.bytesTransferred/snapshot.totalBytes);
                     this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
                 }, 
-                error=>{
+                error => {
                     console.log(error.message)
                 },
                 () => {

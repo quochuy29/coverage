@@ -21,10 +21,21 @@
         </li>
 
         <li class="nav__item">
-            <router-link :to="{name:'userIndex'}" class="nav__link" id="js__change">
-                <a class="fa-solid fa-comments nav__icon"></a>
-                <span class="nav__name">Members</span>
-            </router-link>
+            <a class="nav__link" id="js__change">
+                <router-link :to="{name:'userIndex'}" class="fa-solid fa-comments nav__icon"></router-link>
+                <router-link :to="{name:'userIndex'}"><span class="nav__name">Members</span></router-link>
+                <a class="fa-solid fa-chevron-down toggle-icon"></a>
+            </a>
+
+            <ul class="nav__drop">
+            <div class="padding">
+              <li>
+                <router-link :to="{name:'import-user'}" id="js__change">
+                  <span class="nav__name">Import member</span>
+                </router-link>
+              </li>
+            </div>
+          </ul>
         </li>
 
         <li class="nav__item">

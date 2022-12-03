@@ -23,11 +23,16 @@
                         <form action="" method="">
                             <div class="import__upload__content">
                                 <div class="import__upload__file">
-                                    <button class="mod__btn" type="button">
-                                        <label id="upload-label" for="upload-file" @click="changeFile">ファイルを選択</label>
+                                    <button class="mod__btn" type="button" @click="changeFile">
+                                        <label id="upload-label" for="upload-file">ファイルを選択</label>
                                     </button>
+                                    <span id="name_file_import" :title="fileName">{{fileName}}</span>
                                 </div>
-                                <input id="upload-file" type="file" @input="handleUploadFile($event)" hidden accept=".csv">
+                                <input ref="file" type="file" name="file" @click="resetFileUpload" @change="handleUploadFile($event)" style="display: none;" accept=".csv">
+                                <div class="checkox__delete">
+                                    <input type="checkbox" name="delete_user" id="delete_user" class="delete-user" v-model="deleteUnMatch">
+                                    <label for="delete_user" style="font-size: 2rem;" class="delete-user">Delete user not in file</label>
+                                </div>
                             </div>
 
                             <div class="mod__modal__btn__unit">
@@ -46,9 +51,20 @@
 <script>
     export default {
         name: 'uploadFile',
+        props: {
+            fileName: String,
+            default: 'hhaha'
+        },
         data() {
             return {
-                
+                deleteUnMatch: false
+            }
+        },
+        watch: {
+            deleteUnMatch: {
+                handler(value) {
+                    this.$emit('change-checkbox', value);
+                }
             }
         },
         methods: {
@@ -59,11 +75,24 @@
                 this.$emit('upload-file');
             },
             changeFile() {
+                //khi attribute for của label trùng với id của input thì khi click vào label sẽ click vào input
                 this.$emit('change-file');
             },
+            resetFileUpload() {
+                this.$refs.file.value = '';
+            },
             handleUploadFile(e) {
-                this.$emit('handle-upload-file', e.target.files[0]);
+                this.$emit('handle-upload-file');
             }
         }
     }
 </script>
+
+<style lang="less" scoped>
+.checkox__delete {
+    .delete-user {
+        font-size: 2rem;
+        vertical-align: middle;
+    }
+}
+</style>
