@@ -14,7 +14,8 @@
             @close="close"
             @handle-upload-file="handleUploadFile"
             @upload-file="uploadFile"
-            @change-file="changeFile">
+            @change-file="changeFile"
+            @change-checkbox="changeCheckbox">
         </User-Upload-File>
         <User-Ovl-Setting-Export
             v-if="settingExportFlag"
@@ -32,7 +33,8 @@
                 file: null,
                 settingExportFlag: false,
                 fileName: null,
-                clicked: false
+                clicked: false,
+                checkDelete: false
             }
         },
         methods: {
@@ -46,6 +48,10 @@
 
                 this.uploadFlag = false;
                 this.file = '';
+                this.checkDelete = false;
+            },
+            changeCheckbox(value) {
+                this.checkDelete = value;
             },
             ovlUploadFile() {
                 this.fileName = '';
@@ -69,20 +75,26 @@
                     if (this.file !== '') {
                         formData.append('file', this.file);
                     }
+                    formData.append('delete_user', this.checkDelete);
                     const response = await axios.post(`member/upload-file`, formData);
                     if (response !== undefined && response.status === 200) {
-                        this.overlayFlag = false;
+                        this.uploadFlag = false;
                         this.file = '';
                         this.importFile();
                     }
                 } catch (error) {
+                    this.uploadFlag = false;
                     this.clicked = false;
                     alert(error.response.data.error);
                 }
             },
             async importFile() {
+                const params = {
+                    delete_unmatch_record: this.checkDelete ? 1 : 0
+                }
                 try {
-                    const response = await axios.post(`member/import`);
+                    const response = await axios.post(`member/import`, params);
+                    this.showToast(response.data.message);
                 } catch(error) {
                     const url = error.response.data.url_error;
                     const fileName = error.response.data.file_name;

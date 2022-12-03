@@ -29,6 +29,10 @@
                                     <span id="name_file_import" :title="fileName">{{fileName}}</span>
                                 </div>
                                 <input ref="file" type="file" name="file" @click="resetFileUpload" @change="handleUploadFile($event)" style="display: none;" accept=".csv">
+                                <div class="checkox__delete">
+                                    <input type="checkbox" name="delete_user" id="delete_user" class="delete-user" v-model="deleteUnMatch">
+                                    <label for="delete_user" style="font-size: 2rem;" class="delete-user">Delete user not in file</label>
+                                </div>
                             </div>
 
                             <div class="mod__modal__btn__unit">
@@ -53,7 +57,14 @@
         },
         data() {
             return {
-                
+                deleteUnMatch: false
+            }
+        },
+        watch: {
+            deleteUnMatch: {
+                handler(value) {
+                    this.$emit('change-checkbox', value);
+                }
             }
         },
         methods: {
@@ -76,3 +87,12 @@
         }
     }
 </script>
+
+<style lang="less" scoped>
+.checkox__delete {
+    .delete-user {
+        font-size: 2rem;
+        vertical-align: middle;
+    }
+}
+</style>
